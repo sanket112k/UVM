@@ -1,3 +1,5 @@
+`define DRIV_IF vif.DRIVER.driver_cb
+
 class mem_driver extends uvm_driver#(mem_seq_item);
   
   virtual mem_if vif;
@@ -26,11 +28,11 @@ class mem_driver extends uvm_driver#(mem_seq_item);
     req.print();
     `DRIV_IF.wr_en <= 0;
     `DRIV_IF.rd_en <= 0;
-    @(posede vif.DRIVER.clk);
+    @(posedge vif.DRIVER.clk);
     `DRIV_IF.addr <= req.wr_en;
     if(req.wr_en) begin
-      `DRIV_IF.	wr_en <= req.wr_en;
-      `DRIV_IF.	wdata <= req.wdata;
+      `DRIV_IF.wr_en <= req.wr_en;
+      `DRIV_IF.wdata <= req.wdata;
       @(posedge vif.DRIVER.clk);
     end
     if(req.rd_en) begin
@@ -38,7 +40,7 @@ class mem_driver extends uvm_driver#(mem_seq_item);
       @(posedge vif.DRIVER.clk);
       `DRIV_IF.rd_en <= 0;
       @(posedge vif.DRIVER.clk);
-      req.rdata = `DRIV_IF.rdata;
+      req.rdata <= `DRIV_IF.rdata;
     end
   endtask
   
